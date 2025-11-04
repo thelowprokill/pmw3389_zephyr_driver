@@ -3,8 +3,5 @@
 
 config PMW3389
 	bool "PMW3389 motion sensor"
-	default y
-	depends on DT_HAS_PIXART_PMW3389_ENABLED
-	depends on SPI
 	help
 	  Enable PMW3389 motion sensor.

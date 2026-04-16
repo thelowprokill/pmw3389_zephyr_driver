@@ -4,7 +4,7 @@
 
 #define DT_DRV_COMPAT pixart_pmw3389
 
-#include "pmw3389.h"
+#include "../../../include/zephyr/drivers/sensor/pmw3389.h"
 
 #include <zephyr/drivers/spi.h>
 #include <zephyr/logging/log.h>

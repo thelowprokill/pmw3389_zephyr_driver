@@ -1,0 +1,38 @@
+&lpspi4 {
+    // driver: zephyr 4.3.0-rc1
+    // compatible = "nxp,lpspi";
+    // driver: zephyr 4.0.0
+    compatible = "nxp,imx-lpspi";
+
+    status = "okay";
+
+    transfer-delay = <50>; // ns
+
+    pinctrl-0 = <&pinmux_lpspi4>;
+    pinctrl-names = "default";
+    
+    cs-gpios = <&gpio1 24 GPIO_ACTIVE_LOW>; // Steering 1 (front-left)
+
+    my_sensor: pmw3389@0 {
+        compatible = "pixart,pmw3389";
+        spi-max-frequency = <2000000>; // 2MHz
+        resolution = <200>; // overflow in 0.5s at 8m/s -> 200 CPI
+        status = "okay";
+        reg = <0>;
+    };
+
+};
+
+&zephyr_udc0 {
+    cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+	};
+};
+
+/ {
+    chosen {
+	    zephyr,console = &cdc_acm_uart0;
+        // use hardware uart for early debug (if necessary):
+        // zephyr,console = &lpuart6;
+    };
+};

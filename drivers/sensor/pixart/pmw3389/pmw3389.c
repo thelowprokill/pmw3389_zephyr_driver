@@ -495,7 +495,7 @@ static const struct sensor_driver_api pmw3389_api = {
 		.spi = SPI_DT_SPEC_INST_GET(n,                                                     \
 					    SPI_OP_MODE_MASTER | SPI_WORD_SET(8U) |                \
 						    SPI_HOLD_ON_CS | SPI_MODE_CPOL |               \
-						    SPI_MODE_CPHA),                                \
+						    SPI_MODE_CPHA, 0),                             \
 		.resolution_cpi = DT_INST_PROP(n, resolution)};                                    \
 	DEVICE_DT_INST_DEFINE(n, &pmw3389_init, NULL, &pmw3389_data_##n, &pmw3389_config_##n,      \
 			      POST_KERNEL, CONFIG_SENSOR_INIT_PRIORITY, &pmw3389_api);

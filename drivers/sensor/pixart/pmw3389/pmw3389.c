@@ -455,6 +455,13 @@ int pmw3389_sample_fetch(const struct device *dev, enum sensor_channel chan)
 #else
 	fetch_manual(spec, &data->delta_x, &data->delta_y);
 #endif
+
+	/* -15° rotation + Y inversion to match physical sensor mounting angle */
+	int32_t raw_x = data->delta_x;
+	int32_t raw_y = data->delta_y;
+	data->delta_x = (int16_t)(( 966 * raw_x + 259 * raw_y) / 1000);
+	data->delta_y = (int16_t)(( 259 * raw_x - 966 * raw_y) / 1000);
+
 	return 0;
 }
 

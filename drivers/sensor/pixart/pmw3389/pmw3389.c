@@ -369,6 +369,7 @@ int pmw3389_init(const struct device *dev)
 	//    55ms. This register read interval must be carried out at 1ms interval with timing
 	//    tolerance of +/- 1%.
 	LOG_DBG("Waiting for proper value in 0x3D...");
+	int64_t deadline = k_uptime_get() + 60;
 	while (true) {
 		// Do not wait T_SRR since the 1ms is way longer anyway
 		uint8_t result_3D = 0;
@@ -376,6 +377,11 @@ int pmw3389_init(const struct device *dev)
 		LOG_DBG(" Got %#x", result_3D);
 		if (result_3D == 0xC0) {
 			break;
+		}
+		if (k_uptime_get() >= deadline) {
+			LOG_ERR("Timed out waiting for sensor ready (0x3D != 0xC0)");
+			spi_release_dt(spec);
+			return -ETIMEDOUT;
 		}
 		k_busy_wait(1000);
 	}
